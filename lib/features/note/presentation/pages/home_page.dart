@@ -2,14 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notes/features/note/presentation/cubits/note_cubit.dart';
 import 'package:my_notes/features/note/presentation/cubits/note_state.dart';
+import 'package:my_notes/features/note/presentation/pages/edit_note_page.dart';
+import 'package:my_notes/features/note/presentation/pages/keyword_page.dart';
+import 'package:my_notes/features/note/presentation/widgets/note_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  void createNote(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: const Text('Create a Note'),
+          contentPadding: const EdgeInsets.all(16),
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                hintText: 'Title',
+              ),
+              onSubmitted: (title) {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditNotePage(title: title),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Test home page')),
+      appBar: AppBar(
+        title: const Text('My Notes'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const KeywordPage(),
+                    ),
+                  );
+                },
+                child: const Text('Change keyword'),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: BlocConsumer<NoteCubit, NoteState>(
         listener: (context, state) {
           if (state is NoteError) {
@@ -31,9 +81,7 @@ class HomePage extends StatelessWidget {
               itemCount: notes.length,
               itemBuilder: (context, index) {
                 final note = notes[index];
-                return ListTile(
-                  title: Text(note.title),
-                );
+                return NoteCard(note: note);
               },
             );
           }
@@ -45,7 +93,7 @@ class HomePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => createNote(context),
         child: const Icon(Icons.add),
       ),
     );

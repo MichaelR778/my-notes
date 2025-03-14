@@ -19,6 +19,7 @@ class UpdateNote {
       id: noteId,
       title: title,
       content: encrypted,
+      lastUpdated: DateTime.now(),
     );
 
     await _noteRepository.updateNote(newNote);

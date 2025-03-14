@@ -22,6 +22,8 @@ class _KeywordPageState extends State<KeywordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: Colors.transparent),
       body: Stack(
         children: [
           LottieBuilder.asset('assets/lotties/corner.json'),
@@ -48,11 +50,12 @@ class _KeywordPageState extends State<KeywordPage> {
                       onPressed: () {
                         try {
                           changeKey(_controller.text);
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const HomePage(),
                             ),
+                            (_) => false,
                           );
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -20,9 +20,10 @@ class FirebaseNoteRepository implements NoteRepository {
   @override
   Future<void> createNote(String title, String content) async {
     final noteModel = NoteModel(
-      id: 'id',
+      id: '-',
       title: title,
       content: content,
+      lastUpdated: DateTime.now(),
     );
     await _firestore.collection('notes').add(noteModel.toJson());
   }
@@ -34,5 +35,10 @@ class FirebaseNoteRepository implements NoteRepository {
         .collection('notes')
         .doc(noteModel.id)
         .set(noteModel.toJson());
+  }
+
+  @override
+  Future<void> deleteNote(String noteId) async {
+    await _firestore.collection('notes').doc(noteId).delete();
   }
 }

@@ -4,4 +4,5 @@ abstract class NoteRepository {
   Future<List<Note>> fetchNotes();
   Future<void> createNote(String title, String content);
   Future<void> updateNote(Note note);
+  Future<void> deleteNote(String noteId);
 }

@@ -26,7 +26,14 @@ class _KeywordPageState extends State<KeywordPage> {
       appBar: AppBar(backgroundColor: Colors.transparent),
       body: Stack(
         children: [
-          LottieBuilder.asset('assets/lotties/corner.json'),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: LottieBuilder.asset(
+              'assets/lotties/corner.json',
+              width: 300,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(

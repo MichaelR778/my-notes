@@ -77,18 +77,27 @@ class HomePage extends StatelessWidget {
           // loaded
           else if (state is NoteLoaded) {
             final notes = state.notes;
-            return ListView.builder(
-              itemCount: notes.length,
-              itemBuilder: (context, index) {
-                final note = notes[index];
-                return NoteCard(note: note);
-              },
+            return RefreshIndicator(
+              onRefresh: () => context.read<NoteCubit>().fetchNotes(),
+              child: ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  return NoteCard(note: note);
+                },
+              ),
             );
           }
 
           // NoteError etc
-          return const Center(
-            child: Text('Something went wrong'),
+          return Column(
+            children: [
+              const Text('Something went wrong'),
+              TextButton(
+                onPressed: () => context.read<NoteCubit>().fetchNotes(),
+                child: const Text('Retry'),
+              ),
+            ],
           );
         },
       ),
